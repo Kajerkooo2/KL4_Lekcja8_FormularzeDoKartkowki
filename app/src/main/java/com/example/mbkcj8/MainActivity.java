@@ -1,6 +1,9 @@
 package com.example.mbkcj8;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +11,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private EditText etName, etDate;
+    private Button btnAdd;
+    private ListView listView;
+    private List<Person> birthdayList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +32,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        etName = findViewById(R.id.etName);
+        etDate = findViewById(R.id.etDate);
+        listView = findViewById(R.id.listView);
+        btnAdd = findViewById(R.id.btnAdd);
     }
 }
