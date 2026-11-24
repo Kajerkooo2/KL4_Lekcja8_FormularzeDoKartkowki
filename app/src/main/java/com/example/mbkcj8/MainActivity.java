@@ -3,6 +3,7 @@ package com.example.mbkcj8;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,14 +15,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText etName, etDate;
+    private EditText etName;
+    private DatePicker datePicker;
     private Button btnAdd;
     private ListView listView;
     private List<Person> birthdayList = new ArrayList<>();
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         etName = findViewById(R.id.etName);
-        etDate = findViewById(R.id.etDate);
+        datePicker = findViewById(R.id.datePicker);
         listView = findViewById(R.id.listView);
         btnAdd = findViewById(R.id.btnAdd);
 
@@ -51,24 +51,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void addPerson() {
         String name = etName.getText().toString().trim();
-        String dateText = etDate.getText().toString().trim();
 
-        if (name.isEmpty() || dateText.isEmpty()) {
-            Toast.makeText(this, "Wypelnij pola", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Wypelnij pole imienia", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        try {
-            LocalDate birthDate = LocalDate.parse(dateText, DateTimeFormatter.ISO_LOCAL_DATE);
+        int year = datePicker.getYear();
+        int month = datePicker.getMonth() + 1;
+        int day = datePicker.getDayOfMonth();
 
-            Person newPerson = new Person(name, birthDate);
-            birthdayList.add(newPerson);
-            birthdayAdapter.notifyDataSetChanged();
+        LocalDate birthDate = LocalDate.of(year, month, day);
 
-            etName.setText("");
-            etDate.setText("");
-        } catch (DateTimeParseException e) {
-            Toast.makeText(this, "Niepoprawny format daty. Użyj RRRR-MM-DD", Toast.LENGTH_LONG).show();
-        }
+        Person newPerson = new Person(name, birthDate);
+        birthdayList.add(newPerson);
+        birthdayAdapter.notifyDataSetChanged();
+
+        etName.setText("");
     }
 }
